@@ -1,6 +1,7 @@
 // @flow strict
 import React from 'react';
 import { Link } from 'gatsby';
+import ReactAudioPlayer from 'react-audio-player';
 import Author from './Author';
 import Comments from './Comments';
 import Content from './Content';
@@ -16,7 +17,12 @@ type Props = {
 const Post = ({ post }: Props) => {
   const { html } = post;
   const { tagSlugs, slug } = post.fields;
-  const { tags, title, date } = post.frontmatter;
+  const { tags, title, date, template } = post.frontmatter;
+  const podcast = template === 'podcast' ? (<ReactAudioPlayer
+    src={post.frontmatter.enclosure.url}
+    autoPlay={false}
+    controls
+  />) : null;
 
   return (
     <div className={styles['post']}>
@@ -24,6 +30,7 @@ const Post = ({ post }: Props) => {
 
       <div className={styles['post__content']}>
         <Content body={html} title={title} />
+        {podcast}
       </div>
 
       <div className={styles['post__footer']}>
